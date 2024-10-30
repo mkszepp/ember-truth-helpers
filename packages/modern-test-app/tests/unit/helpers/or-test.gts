@@ -1,5 +1,5 @@
 import { run } from '@ember/runloop';
-import EmberObject from '@ember/object';
+import EmberObject, { get } from '@ember/object';
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render } from '@ember/test-helpers';
@@ -68,6 +68,27 @@ module('helper:or', function (hooks) {
       .hasText(
         '[ ] [yellow] [yellow] [ ]',
         'value should be "[ ] [yellow] [yellow] [ ]"'
+      );
+  });
+  
+  test('simple test 5 - Glint should allow return type `unkonwn`', async function (assert) {
+    const fakeContextObject: {
+      [key: string]: unknown;
+    } = {
+      item1: 'test',
+      item2: 2,
+      item3: true,
+    };
+    
+    await render(
+      <template>[{{(or (get fakeContextObject "item1"))}}] [{{or (get fakeContextObject "item2")}}] [{{or (get fakeContextObject "item500")}}]</template>
+    );
+
+    assert
+      .dom()
+      .hasText(
+        '[test] [2] []',
+        'value should be "[test] [2] []"'
       );
   });
 });

@@ -59,6 +59,7 @@ export type MaybeTruthy =
   | number
   | bigint
   | string
+  | unknown
   | unknown[]
   | object;
 
